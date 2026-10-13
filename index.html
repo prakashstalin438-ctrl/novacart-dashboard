@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCart AI E-Commerce Analytics Dashboard</title>
+
+  <!-- Google Fonts: Outfit (headings, general UI) and JetBrains Mono (data tables, code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- App Wrapper -->
+  <div class="app-wrapper">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="shopping-bag" class="logo-icon"></i>
+          <span class="logo-text">Nova<span>Cart</span></span>
+        </div>
+        <button class="mobile-close-btn" id="mobile-close-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">Dashboard</div>
+        <a href="#" class="nav-item active" data-page="overview">
+          <i data-lucide="layout-dashboard"></i> Overview
+        </a>
+        <a href="#" class="nav-item" data-page="orders">
+          <i data-lucide="shopping-cart"></i> Orders
+        </a>
+
+        <div class="nav-section">Analytics</div>
+        <a href="#" class="nav-item" data-page="sales">
+          <i data-lucide="trending-up"></i> Sales Analytics
+        </a>
+        <a href="#" class="nav-item" data-page="revenue">
+          <i data-lucide="dollar-sign"></i> Revenue Analytics
+        </a>
+        <a href="#" class="nav-item" data-page="customers">
+          <i data-lucide="users"></i> Customer Analytics
+        </a>
+        <a href="#" class="nav-item" data-page="products">
+          <i data-lucide="package"></i> Product Analytics
+        </a>
+
+        <div class="nav-section">Operations</div>
+        <a href="#" class="nav-item" data-page="inventory">
+          <i data-lucide="boxes"></i> Inventory
+        </a>
+        <a href="#" class="nav-item" data-page="shipping">
+          <i data-lucide="truck"></i> Shipping
+        </a>
+        <a href="#" class="nav-item" data-page="returns">
+          <i data-lucide="rotate-ccw"></i> Returns
+        </a>
+
+        <div class="nav-section">Marketing & Finance</div>
+        <a href="#" class="nav-item" data-page="marketing">
+          <i data-lucide="megaphone"></i> Marketing
+        </a>
+        <a href="#" class="nav-item" data-page="financial">
+          <i data-lucide="wallet"></i> Financial
+        </a>
+
+        <div class="nav-section">AI Assistant</div>
+        <a href="#" class="nav-item" data-page="ai-assistant">
+          <i data-lucide="sparkles" class="ai-sparkle"></i> AI Chat Assistant
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Stalin Danvers</div>
+            <div class="user-role">Administrator</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dashboard Panel -->
+    <main class="main-content">
+
+      <!-- Top Header -->
+      <header class="header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" id="mobile-toggle-btn">
+            <i data-lucide="menu"></i>
+          </button>
+          <h1 class="header-title" id="header-title">Dashboard Overview</h1>
+        </div>
+
+        <div class="header-right">
+          <!-- Theme Switcher -->
+          <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+            <i data-lucide="sun" class="sun-icon"></i>
+            <i data-lucide="moon" class="moon-icon"></i>
+          </button>
+
+          <!-- Notifications Panel Trigger -->
+          <button class="icon-btn relative" id="notification-btn" title="View alerts">
+            <i data-lucide="bell"></i>
+            <span class="badge badge-red" id="alert-dot">3</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="header-divider"></div>
+
+          <div class="current-time" id="current-time">Jul 03, 2026 10:24 PM</div>
+        </div>
+      </header>
+
+      <!-- Main Content Container -->
+      <div class="content-body" id="content-body">
+
+        <!-- ================= PAGE: OVERVIEW ================= -->
+        <section id="page-overview" class="page-view active">
+          <div class="overview-layout">
+
+            <!-- Left Column: Main Dashboard Content -->
+            <div class="overview-main">
+              <!-- Welcome Alert Banner -->
+              <div class="welcome-banner">
+                <div class="welcome-banner-content">
+                  <h2>Welcome back, Stalin! 👋</h2>
+                  <p>NovaCart performance is looking strong today. Revenue is up 12% compared to last week, driven by
+                    smartphone sales. Check your new AI insights below.</p>
+                </div>
+                <div class="welcome-banner-button">
+                  <button class="primary-btn btn-sm" onclick="window.app.navigateTo('ai-assistant')">
+                    <i data-lucide="sparkles"></i> Open AI Assistant
+                  </button>
+                </div>
+              </div>
+
+              <!-- Overview KPIs -->
+              <div class="grid grid-5 gap-4">
+                <div class="card kpi-card">
+                  <div class="kpi-header">
+                    <span class="kpi-title">Gross Revenue</span>
+                    <i data-lucide="dollar-sign" class="kpi-icon text-blue"></i>
+                  </div>
+                  <div class="kpi-value" id="ov-revenue">$54,230</div>
+                  <div class="kpi-footer">
+                    <span class="trend-pill trend-up"><i data-lucide="arrow-up-right"></i> 12.4%</span>
+                    <span class="kpi-trend-label">vs last week</span>
+                  </div>
+                </div>
+
+                <div class="card kpi-card">
+                  <div class="kpi-header">
+                    <span class="kpi-title">Total Orders</span>
+                    <i data-lucide="shopping-cart" class="kpi-icon text-purple"></i>
+                  </div>
+                  <div class="kpi-value" id="ov-orders">180</div>
+                  <div class="kpi-footer">
+                    <span class="trend-pill trend-up"><i data-lucide="arrow-up-right"></i> 8.2%</span>
+                    <span class="kpi-trend-label">vs last week</span>
+                  </div>
+                </div>
+
+                <div class="card kpi-card">
+                  <div class="kpi-header">
+                    <span class="kpi-title">Active Customers</span>
+                    <i data-lucide="users" class="kpi-icon text-emerald"></i>
+                  </div>
+                  <div class="kpi-value" id="ov-customers">48</div>
+                  <div class="kpi-footer">
+                    <span class="trend-pill trend-up"><i data-lucide="arrow-up-right"></i> 5.1%</span>
+                    <span class="kpi-trend-label">vs last week</span>
+                  </div>
+                </div>
+
+                <div class="card kpi-card">
+                  <div class="kpi-header">
+                    <span class="kpi-title">Avg. Conversion Rate</span>
+                    <i data-lucide="percent" class="kpi-icon text-amber"></i>
+                  </div>
+                  <div class="kpi-value" id="ov-conversion">3.12%</div>
+                  <div class="kpi-footer">
+                    <span class="trend-pill trend-down"><i data-lucide="arrow-down-left"></i> -0.4%</span>
+                    <span class="kpi-trend-label">vs last week</span>
+                  </div>
+                </div>
+
+                <div class="card kpi-card border-blue-glow">
+                  <div class="kpi-header">
+                    <span class="kpi-title">Revenue Forecast (AI)</span>
+                    <i data-lucide="sparkles" class="kpi-icon text-blue animate-pulse"></i>
+                  </div>
+                  <div class="kpi-value" id="ov-forecast">$0</div>
+                  <div class="kpi-footer">
+                    <span class="trend-pill trend-up"><i data-lucide="arrow-up-right"></i> +8.4%</span>
+                    <span class="kpi-trend-label">projected for Jul</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Overview Charts -->
+              <div class="grid grid-2-1 gap-4">
+                <div class="card chart-card">
+                  <div class="card-header">
+                    <h3>Sales Growth Trend</h3>
+                    <span class="muted-text">Monthly revenue & projections</span>
+                  </div>
+                  <div class="chart-container">
+                    <canvas id="chart-ov-sales"></canvas>
+                  </div>
+                </div>
+
+                <div class="card chart-card">
+                  <div class="card-header">
+                    <h3>Top Selling Categories</h3>
+                    <span class="muted-text">Share of total revenue</span>
+                  </div>
+                  <div class="chart-container flex-center">
+                    <canvas id="chart-ov-categories"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Overview AI Forecast & Recent Activity Grid -->
+              <div class="grid grid-2-1 gap-4">
+                <div class="card chart-card">
+                  <div class="card-header flex-between">
+                    <div>
+                      <h3>AI Revenue Forecast & Projections</h3>
+                      <span class="muted-text">Model-based forecasting for next 3 months</span>
+                    </div>
+                    <span class="badge badge-blue text-xs font-medium"><i data-lucide="sparkles"
+                        class="inline-icon text-xs mr-1 animate-pulse"></i> Predictive Model</span>
+                  </div>
+                  <div class="chart-container">
+                    <canvas id="chart-ov-forecast"></canvas>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header flex-between">
+                    <div>
+                      <h3>Recent Orders</h3>
+                      <span class="muted-text">Latest transactions feed</span>
+                    </div>
+                    <button class="primary-btn btn-sm" onclick="window.app.navigateTo('orders')">
+                      All Orders <i data-lucide="arrow-right"></i>
+                    </button>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="recent-orders-table">
+                      <thead>
+                        <tr>
+                          <th>Order ID</th>
+                          <th>Customer</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Populated dynamically via app.js -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.overview-main -->
+
+            <!-- Right Column: AI Insights Panel -->
+            <div class="overview-sidebar">
+              <!-- AI Insights Container -->
+              <div class="card">
+                <div class="card-header flex-between flex-wrap gap-2 border-b-none p-0 pb-3">
+                  <div class="flex-align gap-2">
+                    <i data-lucide="sparkles" class="text-blue animate-pulse"></i>
+                    <h3 class="m-0">AI Insights & Actions</h3>
+                  </div>
+                  <span class="badge badge-blue text-xs font-medium">Real-Time Recommendations</span>
+                </div>
+
+                <div class="segmented-control w-100 mb-3" id="insights-filter">
+                  <button class="segmented-item active" data-filter="All">All</button>
+                  <button class="segmented-item" data-filter="Sales">Sales</button>
+                  <button class="segmented-item" data-filter="Inventory">Inventory</button>
+                  <button class="segmented-item" data-filter="Shipping">Shipping</button>
+                </div>
+
+                <div class="insights-container mt-2" id="overview-insights"
+                  style="display: flex; flex-direction: column; gap: 16px;">
+                  <!-- Dynamically rendered insights -->
+                </div>
+              </div>
+            </div><!-- /.overview-sidebar -->
+
+          </div><!-- /.overview-layout -->
+        </section>
+
+        <!-- ================= PAGE: ORDERS ================= -->
+        <section id="page-orders" class="page-view">
+          <!-- Orders KPIs -->
+          <div class="grid grid-4 gap-4 mb-4">
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Total Orders</span>
+                <i data-lucide="shopping-bag" class="kpi-icon text-blue"></i>
+              </div>
+              <div class="kpi-value" id="ord-total">0</div>
+              <div class="muted-text text-xs mt-1">Overall orders count</div>
+            </div>
+
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Pending Orders</span>
+                <i data-lucide="clock" class="kpi-icon text-amber"></i>
+              </div>
+              <div class="kpi-value text-amber" id="ord-pending">0</div>
+              <div class="muted-text text-xs mt-1">Needs packing & shipping</div>
+            </div>
+
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Delivered Orders</span>
+                <i data-lucide="check-circle-2" class="kpi-icon text-emerald"></i>
+              </div>
+              <div class="kpi-value text-emerald" id="ord-delivered">0</div>
+              <div class="muted-text text-xs mt-1">Successfully completed</div>
+            </div>
+
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Cancelled Orders</span>
+                <i data-lucide="alert-triangle" class="kpi-icon text-rose"></i>
+              </div>
+              <div class="kpi-value text-rose" id="ord-cancelled">0</div>
+              <div class="muted-text text-xs mt-1">Refunded / Cancelled</div>
+            </div>
+          </div>
+
+          <!-- Orders Table Container -->
+          <div class="card">
+            <!-- Table Toolbar -->
+            <div class="table-toolbar">
+              <div class="search-input-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="orders-search" placeholder="Search orders by customer or ID..."
+                  class="form-input">
+              </div>
+              <div class="filter-controls">
+                <select id="orders-filter-status" class="form-select">
+                  <option value="All">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+                <select id="orders-filter-category" class="form-select">
+                  <option value="All">All Categories</option>
+                  <!-- Categories populated dynamically -->
+                </select>
+                <div class="btn-group">
+                  <button class="secondary-btn btn-sm" onclick="window.app.exportOrdersCSV()" title="Export CSV">
+                    <i data-lucide="file-spreadsheet"></i> CSV
+                  </button>
+                  <button class="secondary-btn btn-sm" onclick="window.app.exportOrdersPDF()" title="Export PDF">
+                    <i data-lucide="file-text"></i> PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table Body -->
+            <div class="table-responsive">
+              <table class="data-table" id="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Total</th>
+                    <th>Courier</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated via app.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table Pagination -->
+            <div class="table-pagination">
+              <div class="pagination-info">
+                Showing <span id="orders-page-start">1</span> to <span id="orders-page-end">10</span> of <span
+                  id="orders-total-count">0</span> orders
+              </div>
+              <div class="pagination-buttons">
+                <button class="icon-btn" id="orders-btn-first" title="First Page"><i
+                    data-lucide="chevrons-left"></i></button>
+                <button class="icon-btn" id="orders-btn-prev" title="Previous Page"><i
+                    data-lucide="chevron-left"></i></button>
+                <button class="icon-btn" id="orders-btn-next" title="Next Page"><i
+                    data-lucide="chevron-right"></i></button>
+                <button class="icon-btn" id="orders-btn-last" title="Last Page"><i
+                    data-lucide="chevrons-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: SALES ANALYTICS ================= -->
+        <section id="page-sales" class="page-view">
+          <div class="card mb-4 flex-between flex-wrap gap-3">
+            <div>
+              <h3>Visualizations and Period Controls</h3>
+              <span class="muted-text">Analyze sales revenue over different periods</span>
+            </div>
+            <div class="flex-align gap-2">
+              <div class="segmented-control" id="sales-period-control">
+                <button class="segmented-item active" data-period="Daily">Daily</button>
+                <button class="segmented-item" data-period="Weekly">Weekly</button>
+                <button class="segmented-item" data-period="Monthly">Monthly</button>
+                <button class="segmented-item" data-period="Quarterly">Quarterly</button>
+                <button class="segmented-item" data-period="Yearly">Yearly</button>
+              </div>
+              <div class="segmented-control" id="sales-chart-type">
+                <button class="segmented-item active" data-type="line" title="Line Chart"><i
+                    data-lucide="trending-up"></i></button>
+                <button class="segmented-item" data-type="bar" title="Bar Chart"><i
+                    data-lucide="bar-chart-3"></i></button>
+                <button class="segmented-item" data-type="area" title="Area Chart"><i
+                    data-lucide="area-chart"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Large Sales Chart (Strict 1 Chart Per Row Rule) -->
+          <div class="card chart-card mb-4">
+            <div class="card-header flex-between">
+              <div>
+                <h3 id="sales-chart-title">Monthly Sales Trend</h3>
+                <span class="muted-text" id="sales-chart-subtitle">Historical analytics timeline</span>
+              </div>
+              <div class="flex-align gap-3">
+                <div class="legend-dot"><span class="bg-blue"></span> Sales Revenue</div>
+              </div>
+            </div>
+            <div class="chart-container large">
+              <canvas id="chart-sales-main"></canvas>
+            </div>
+          </div>
+
+          <!-- Category Sales Breakdown -->
+          <div class="grid grid-2 gap-4">
+            <div class="card">
+              <div class="card-header">
+                <h3>Sales count by Category</h3>
+                <span class="muted-text">Distribution across product lines</span>
+              </div>
+              <div class="chart-container mt-3">
+                <canvas id="chart-sales-categories"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Revenue Contribution Table</h3>
+                <span class="muted-text">Top category performance</span>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="data-table" id="sales-category-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Items Sold</th>
+                      <th>Total Revenue</th>
+                      <th>Share</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regional Sales World Map -->
+          <div class="card mt-4">
+            <div class="card-header flex-between flex-wrap gap-2 border-b-none p-0 pb-3">
+              <div>
+                <h3 class="m-0">Global Sales by Region</h3>
+                <span class="muted-text text-xs">Geographic distribution of customer order locations</span>
+              </div>
+              <span class="badge badge-blue text-xs font-medium">Live Geographic Feeds</span>
+            </div>
+
+            <div class="grid grid-2-1 gap-4 mt-2">
+              <div class="map-wrapper flex-center" id="sales-world-map"
+                style="position: relative; background: rgba(0,0,0,0.15); border-radius: var(--radius-lg); padding: 10px; border: 1px solid var(--border-color); overflow: hidden;">
+                <!-- Dotted SVG map outline with pulsing pins -->
+                <svg viewBox="0 0 800 400" width="100%" height="100%" class="world-svg">
+                  <!-- North America -->
+                  <path class="map-continent"
+                    d="M 100,100 L 220,100 L 250,150 L 220,190 L 170,190 L 150,210 L 140,170 Z"
+                    fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+                  <!-- South America -->
+                  <path class="map-continent" d="M 170,200 L 210,200 L 240,240 L 200,330 L 180,360 L 170,300 Z"
+                    fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+                  <!-- Greenland -->
+                  <path class="map-continent" d="M 200,60 L 250,50 L 270,80 L 220,90 Z" fill="rgba(255, 255, 255, 0.08)"
+                    stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+                  <!-- Eurasia -->
+                  <path class="map-continent"
+                    d="M 320,100 L 450,90 L 600,80 L 680,100 L 680,170 L 600,220 L 500,230 L 400,230 L 350,200 Z"
+                    fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+                  <!-- Africa -->
+                  <path class="map-continent"
+                    d="M 350,210 L 430,200 L 460,240 L 440,300 L 400,340 L 370,310 L 340,250 Z"
+                    fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+                  <!-- Australia -->
+                  <path class="map-continent" d="M 580,270 L 650,270 L 660,310 L 600,320 Z"
+                    fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5"></path>
+
+                  <!-- Pulsing Regions (California, New York, London, Toronto) -->
+                  <!-- California -->
+                  <g class="map-pin" data-region="California" transform="translate(120, 130)">
+                    <circle class="map-pin-pulse" r="10" fill="none" stroke="#3b82f6" stroke-width="2"></circle>
+                    <circle r="4" fill="#3b82f6"></circle>
+                  </g>
+
+                  <!-- Toronto -->
+                  <g class="map-pin" data-region="Toronto" transform="translate(180, 120)">
+                    <circle class="map-pin-pulse" r="10" fill="none" stroke="#3b82f6" stroke-width="2"></circle>
+                    <circle r="4" fill="#3b82f6"></circle>
+                  </g>
+
+                  <!-- New York -->
+                  <g class="map-pin" data-region="New York" transform="translate(195, 135)">
+                    <circle class="map-pin-pulse" r="10" fill="none" stroke="#3b82f6" stroke-width="2"></circle>
+                    <circle r="4" fill="#3b82f6"></circle>
+                  </g>
+
+                  <!-- London -->
+                  <g class="map-pin" data-region="London" transform="translate(365, 125)">
+                    <circle class="map-pin-pulse" r="10" fill="none" stroke="#3b82f6" stroke-width="2"></circle>
+                    <circle r="4" fill="#3b82f6"></circle>
+                  </g>
+                </svg>
+
+                <!-- Floating Map Tooltip -->
+                <div class="map-tooltip" id="map-tooltip"
+                  style="position: absolute; display: none; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); border: 1px solid var(--border-color); color: #fff; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 11px; pointer-events: none; z-index: 10;">
+                  <div class="tooltip-title text-semibold">California</div>
+                  <div class="tooltip-value font-mono">15 Orders • $4,200</div>
+                </div>
+              </div>
+
+              <div class="flex-column gap-3" id="map-region-stats">
+                <!-- Dynamically populated region details list -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: REVENUE ANALYTICS ================= -->
+        <section id="page-revenue" class="page-view">
+          <!-- Revenue metrics -->
+          <div class="grid grid-5 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Revenue</span>
+              <div class="kpi-value text-blue" id="rev-total">$0</div>
+              <span class="text-xs text-emerald mt-1"><i data-lucide="trending-up" class="inline-icon"></i>
+                Healthy</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Cost of Goods (COGS)</span>
+              <div class="kpi-value text-rose" id="rev-cost">$0</div>
+              <span class="text-xs muted-text mt-1">Expenses on raw items</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Gross Profit</span>
+              <div class="kpi-value text-emerald" id="rev-profit">$0</div>
+              <span class="text-xs text-emerald mt-1" id="rev-profit-growth">+11.2% growth</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Gross Margin</span>
+              <div class="kpi-value text-purple" id="rev-gross-margin">0%</div>
+              <span class="text-xs muted-text mt-1">Revenue - COGS</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Net Margin</span>
+              <div class="kpi-value text-amber" id="rev-net-margin">0%</div>
+              <span class="text-xs muted-text mt-1">After taxes & refunds</span>
+            </div>
+          </div>
+
+          <!-- Multi-chart split -->
+          <div class="grid grid-2 gap-4">
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Revenue Growth (Past 12 Months)</h3>
+                <span class="muted-text">Tracking total monthly inflows</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-rev-growth"></canvas>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Net Profit Trend</h3>
+                <span class="muted-text">Monthly post-deduction margins</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-rev-profit"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: CUSTOMER ANALYTICS ================= -->
+        <section id="page-customers" class="page-view">
+          <!-- Customer overview cards -->
+          <div class="grid grid-4 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Registered Customers</span>
+              <div class="kpi-value" id="cust-total">50</div>
+              <span class="text-xs text-emerald mt-1"><i data-lucide="arrow-up-right" class="inline-icon"></i> 100%
+                active database</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Active Buyers (This Month)</span>
+              <div class="kpi-value text-blue" id="cust-active">0</div>
+              <span class="text-xs text-emerald mt-1">Placed 1+ orders</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Returning Customers Rate</span>
+              <div class="kpi-value text-purple" id="cust-returning-rate">0%</div>
+              <span class="text-xs text-emerald mt-1">Repeat purchase index</span>
+            </div>
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Average Customer Lifetime Value</span>
+              <div class="kpi-value text-emerald" id="cust-ltv">$0</div>
+              <span class="text-xs text-purple mt-1">Total revenue / customers</span>
+            </div>
+          </div>
+
+          <div class="grid grid-3 gap-4 mb-4">
+            <div class="card chart-card col-span-2">
+              <div class="card-header">
+                <h3>Customer Geographic Locations</h3>
+                <span class="muted-text">Distribution of buyers across major regions</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-cust-locations"></canvas>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Customer Segmentation</h3>
+                <span class="muted-text">Loyal vs. VIP vs. Standard tiers</span>
+              </div>
+              <div class="chart-container flex-center">
+                <canvas id="chart-cust-segments"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Customers Table & Customer Activity Timeline Grid -->
+          <div class="grid grid-3-1 gap-4">
+            <!-- Left column: High-Value Loyal Customers -->
+            <div class="card col-span-2">
+              <div class="card-header">
+                <h3>High-Value Loyal Customers</h3>
+                <span class="muted-text">Highest spending accounts on NovaCart</span>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="data-table" id="customers-top-table">
+                  <thead>
+                    <tr>
+                      <th>Customer Name</th>
+                      <th>Email</th>
+                      <th>Location</th>
+                      <th>Segment</th>
+                      <th>Orders Placed</th>
+                      <th>Total Spent</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated via script -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right column: Customer Activity Timeline -->
+            <div class="card">
+              <div class="card-header flex-align gap-2 border-b-none p-0 pb-3">
+                <i data-lucide="history" class="text-blue"></i>
+                <h3 class="m-0">Customer Activity</h3>
+              </div>
+              <div class="timeline-container mt-2" id="customer-activity-timeline"
+                style="display: flex; flex-direction: column; gap: 20px; position: relative;">
+                <!-- Populated dynamically via app.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: PRODUCT ANALYTICS ================= -->
+        <section id="page-products" class="page-view">
+          <!-- Ranking lists grid -->
+          <div class="grid grid-3 gap-4 mb-4">
+            <div class="card">
+              <div class="card-header flex-align gap-2">
+                <i data-lucide="crown" class="text-amber"></i>
+                <h3 class="m-0">Top Selling Products</h3>
+              </div>
+              <div class="ranking-list mt-3" id="prod-list-top-selling">
+                <!-- populated dynamically -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header flex-align gap-2">
+                <i data-lucide="trending-down" class="text-rose"></i>
+                <h3 class="m-0">Low Selling Products</h3>
+              </div>
+              <div class="ranking-list mt-3" id="prod-list-low-selling">
+                <!-- populated dynamically -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header flex-align gap-2">
+                <i data-lucide="dollar-sign" class="text-emerald"></i>
+                <h3 class="m-0">Highest Revenue Products</h3>
+              </div>
+              <div class="ranking-list mt-3" id="prod-list-high-revenue">
+                <!-- populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2 gap-4">
+            <div class="card">
+              <div class="card-header flex-align gap-2">
+                <i data-lucide="star" class="text-amber"></i>
+                <h3 class="m-0">Highest Rated Products</h3>
+              </div>
+              <div class="ranking-list mt-3" id="prod-list-highest-rated">
+                <!-- populated dynamically -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header flex-align gap-2">
+                <i data-lucide="rotate-ccw" class="text-rose"></i>
+                <h3 class="m-0">Most Returned Products</h3>
+              </div>
+              <div class="ranking-list mt-3" id="prod-list-most-returned">
+                <!-- populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: INVENTORY MANAGEMENT ================= -->
+        <section id="page-inventory" class="page-view">
+          <!-- Inventory KPIs -->
+          <div class="grid grid-5 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Stock Items</span>
+              <div class="kpi-value text-blue" id="inv-total-stock">0</div>
+              <span class="text-xs muted-text mt-1">Units in warehouse</span>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Low Stock Alert Items</span>
+              <div class="kpi-value text-amber" id="inv-low-stock">0</div>
+              <span class="text-xs text-amber mt-1"><i data-lucide="alert-triangle" class="inline-icon"></i> Under 20
+                units</span>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Out of Stock Items</span>
+              <div class="kpi-value text-rose" id="inv-out-of-stock">0</div>
+              <span class="text-xs text-rose mt-1"><i data-lucide="x-circle" class="inline-icon"></i> Action
+                required</span>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Incoming Inventory</span>
+              <div class="kpi-value text-emerald">450</div>
+              <span class="text-xs text-emerald mt-1">Pending shipments</span>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Warehouse Capacity</span>
+              <div class="kpi-value text-purple" id="inv-capacity">64%</div>
+              <!-- Mini progress bar -->
+              <div class="progress-bar-wrapper mt-2">
+                <div class="progress-bar bg-purple" style="width: 64%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Critical Low Stock Alerts Banner -->
+          <div id="low-stock-alert-banner" style="display: none; margin-bottom: 24px;"></div>
+
+          <div class="grid grid-3-1 gap-4">
+            <!-- Inventory Data Table -->
+            <div class="card col-span-2">
+              <div class="table-toolbar">
+                <h3>Warehouse Stock Registry</h3>
+                <div class="flex-align gap-2 flex-wrap">
+                  <div class="search-input-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="inventory-search" placeholder="Search product stock registry..."
+                      class="form-input">
+                  </div>
+                  <div class="btn-group">
+                    <button class="secondary-btn btn-sm" onclick="window.app.exportInventoryCSV()" title="Export CSV">
+                      <i data-lucide="file-spreadsheet"></i> CSV
+                    </button>
+                    <button class="secondary-btn btn-sm" onclick="window.app.exportInventoryPDF()" title="Export PDF">
+                      <i data-lucide="file-text"></i> PDF
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table" id="inventory-table">
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Product Name</th>
+                      <th>Category</th>
+                      <th>Stock Level</th>
+                      <th>Supplier</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Low Stock Alerts & Reorder Panel -->
+            <div class="flex-column gap-4">
+              <div class="card border-rose-glow">
+                <div class="card-header flex-align gap-2 border-b-none p-0 pb-3">
+                  <i data-lucide="bell-ring" class="text-rose animate-bounce"></i>
+                  <h3 class="m-0">Restock Suggestions</h3>
+                </div>
+                <div class="alert-box alert-rose mb-3">
+                  <div class="text-xs font-semibold">URGENT ACTIONS REQUIRED</div>
+                  <div class="text-xs mt-1">Supply chains are indicating short supply for these high velocity sales
+                    products.</div>
+                </div>
+                <div class="restock-suggestions-list" id="restock-suggestions-list">
+                  <!-- Populated via script -->
+                </div>
+              </div>
+
+              <div class="card bg-gradient-purple">
+                <h3>Supplier SLA Performance</h3>
+                <p class="text-xs muted-text">Average delivery turnaround times from wholesale warehouse facilities.</p>
+                <div class="metrics-lines mt-3">
+                  <div class="flex-between text-xs py-2 border-b">
+                    <span>Apex Kitchenware</span>
+                    <span class="font-bold text-emerald">2.1 days (Exemplary)</span>
+                  </div>
+                  <div class="flex-between text-xs py-2 border-b">
+                    <span>Vortex Mobile Inc.</span>
+                    <span class="font-bold text-blue">3.5 days (Normal)</span>
+                  </div>
+                  <div class="flex-between text-xs py-2 border-b">
+                    <span>CleanHome Solutions</span>
+                    <span class="font-bold text-amber">5.2 days (Delayed)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: SHIPPING DASHBOARD ================= -->
+        <section id="page-shipping" class="page-view">
+          <!-- Shipping stats cards -->
+          <div class="grid grid-3 gap-4 mb-4">
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span>Shipping On-Time Rate</span>
+                <i data-lucide="clock-3" class="text-emerald"></i>
+              </div>
+              <div class="kpi-value text-emerald" id="ship-ontime">0%</div>
+              <p class="text-xs muted-text mt-1">Target benchmark: >95.0%</p>
+            </div>
+
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span>Average Delivery Time</span>
+                <i data-lucide="calendar-days" class="text-blue"></i>
+              </div>
+              <div class="kpi-value text-blue" id="ship-avg-days">0.0 days</div>
+              <p class="text-xs muted-text mt-1">Calculated across all couriers</p>
+            </div>
+
+            <div class="card kpi-card">
+              <div class="kpi-header">
+                <span>Courier Capacity Status</span>
+                <i data-lucide="shield-check" class="text-purple"></i>
+              </div>
+              <div class="kpi-value text-purple">Normal</div>
+              <p class="text-xs muted-text mt-1">Average warehouse dispatch loads</p>
+            </div>
+          </div>
+
+          <div class="grid grid-3 gap-4 mb-4">
+            <!-- Shipping stages tracking chart -->
+            <div class="card chart-card col-span-2">
+              <div class="card-header">
+                <h3>Shipping Performance Timeline</h3>
+                <span class="muted-text">Order shipments processing distributions</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-ship-performance"></canvas>
+              </div>
+            </div>
+
+            <!-- Courier comparisons -->
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Courier Speed (Avg. Days)</h3>
+                <span class="muted-text">FedEx vs. DHL vs. UPS performance</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-ship-couriers"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courier stats table -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Active Dispatch Courier SLA</h3>
+              <span class="muted-text">Real-time courier load monitoring</span>
+            </div>
+            <div class="table-responsive mt-3">
+              <table class="data-table" id="shipping-couriers-table">
+                <thead>
+                  <tr>
+                    <th>Courier Name</th>
+                    <th>Average Delivery Time</th>
+                    <th>On-Time Delivery Rate</th>
+                    <th>Current System Load</th>
+                    <th>Operational Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: RETURNS DASHBOARD ================= -->
+        <section id="page-returns" class="page-view">
+          <!-- Return KPI stats -->
+          <div class="grid grid-4 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Return Requests</span>
+              <div class="kpi-value" id="ret-total">0</div>
+              <p class="text-xs text-rose mt-1" id="ret-rate">Rate: 0%</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Approved Returns</span>
+              <div class="kpi-value text-emerald" id="ret-approved">0</div>
+              <p class="text-xs text-emerald mt-1">Refunds processed</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Rejected Returns</span>
+              <div class="kpi-value text-amber" id="ret-rejected">0</div>
+              <p class="text-xs text-amber mt-1">Item returned to customer</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Refunded Amount</span>
+              <div class="kpi-value text-rose" id="ret-refund-amount">$0</div>
+              <p class="text-xs muted-text mt-1">Total revenue loss</p>
+            </div>
+          </div>
+
+          <div class="grid grid-2 gap-4">
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Primary Reasons for Returns</h3>
+                <span class="muted-text">Survey responses on customer product return requests</span>
+              </div>
+              <div class="chart-container flex-center">
+                <canvas id="chart-returns-reasons"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Recent Return Requests Queue</h3>
+                <span class="muted-text">Process return requests in real time</span>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="data-table" id="returns-queue-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Date Requested</th>
+                      <th>Product Reason</th>
+                      <th>Amount</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated via script -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: MARKETING ANALYTICS ================= -->
+        <section id="page-marketing" class="page-view">
+          <!-- Marketing funnels stats -->
+          <div class="grid grid-4 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Total Web Visitors</span>
+              <div class="kpi-value text-blue">153,300</div>
+              <p class="text-xs text-emerald mt-1"><i data-lucide="trending-up" class="inline-icon"></i> +14.2%
+                month-on-month</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Average Click-Through Rate (CTR)</span>
+              <div class="kpi-value text-purple">4.46%</div>
+              <p class="text-xs muted-text mt-1">Across all ad platforms</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Average Bounce Rate</span>
+              <div class="kpi-value text-amber">39.18%</div>
+              <p class="text-xs text-emerald mt-1">Excellent (Target <40%)< /p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Avg. Session Duration</span>
+              <div class="kpi-value text-emerald">3m 42s</div>
+              <p class="text-xs muted-text mt-1">User engagement index</p>
+            </div>
+          </div>
+
+          <div class="grid grid-2 gap-4 mb-4">
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Traffic Sources Conversion Chart</h3>
+                <span class="muted-text">Compare channels by actual customer counts generated</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-marketing-sources"></canvas>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Marketing Campaign ROI Analysis</h3>
+                <span class="muted-text">Return on ad spend comparison (ROAS)</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-marketing-roi"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campaign performance tables -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Active Advertising Campaigns Performance</h3>
+              <span class="muted-text">Track budgets, clicks, and generated revenue</span>
+            </div>
+            <div class="table-responsive mt-3">
+              <table class="data-table" id="marketing-campaigns-table">
+                <thead>
+                  <tr>
+                    <th>Campaign Name</th>
+                    <th>Channel</th>
+                    <th>Budget Spent</th>
+                    <th>Customer Sales</th>
+                    <th>ROAS Ratio</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: FINANCIAL DASHBOARD ================= -->
+        <section id="page-financial" class="page-view">
+          <!-- Finance grid cards -->
+          <div class="grid grid-4 gap-4 mb-4">
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Gross Revenue (Past Year)</span>
+              <div class="kpi-value text-blue" id="fin-gross-rev">$0</div>
+              <p class="text-xs muted-text mt-1">Total incoming payments</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Operating Costs & Expenses</span>
+              <div class="kpi-value text-rose" id="fin-operating-cost">$0</div>
+              <p class="text-xs muted-text mt-1">Marketing, supplies, warehouse</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Taxes & Corporate Duties</span>
+              <div class="kpi-value text-amber" id="fin-taxes">$0</div>
+              <p class="text-xs muted-text mt-1">Estimated corporate 15% rate</p>
+            </div>
+
+            <div class="card kpi-card">
+              <span class="muted-text text-xs">Calculated Cash Flow</span>
+              <div class="kpi-value text-emerald" id="fin-cashflow">$0</div>
+              <p class="text-xs text-emerald mt-1"><i data-lucide="check-circle" class="inline-icon"></i> Positive
+                balance</p>
+            </div>
+          </div>
+
+          <div class="grid grid-3 gap-4">
+            <div class="card chart-card col-span-2">
+              <div class="card-header">
+                <h3>Monthly Revenue vs. Expense Inflow</h3>
+                <span class="muted-text">Compare core business income vs cost structures</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-fin-rev-exp"></canvas>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Financial Expense Breakdown</h3>
+                <span class="muted-text">Where NovaCart capital allocation goes</span>
+              </div>
+              <div class="chart-container flex-center">
+                <canvas id="chart-fin-expenses"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE: AI ASSISTANT CHAT ================= -->
+        <section id="page-ai-assistant" class="page-view">
+          <div class="card chat-card-wrapper">
+            <div class="chat-header">
+              <div class="chat-header-info">
+                <div class="ai-avatar"><i data-lucide="sparkles"></i></div>
+                <div>
+                  <h3 class="m-0">NovaCart AI Analyst</h3>
+                  <span class="online-indicator"><span class="pulse-dot"></span>Online • Powered by Gemini
+                    Analytics</span>
+                </div>
+              </div>
+              <button class="primary-btn btn-sm" id="chat-clear-btn">
+                <i data-lucide="trash-2"></i> Clear Conversation
+              </button>
+            </div>
+
+            <!-- Chat logs -->
+            <div class="chat-body" id="chat-log-container">
+              <!-- Dynamically populated dialogue bubbles -->
+              <div class="message msg-ai">
+                <div class="message-bubble">
+                  Hi Stalin! I'm your NovaCart AI Analyst. I can query our sales logs, inventory status, couriers
+                  performance, or customer records in real time.
+                  <br><br>
+                  What would you like to analyze today? You can select one of the quick options below or type your own
+                  question!
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick questions selectors -->
+            <div class="chat-suggestions-wrapper">
+              <span class="text-xs muted-text font-semibold">Suggested Inquiries:</span>
+              <div class="chat-suggestions" id="chat-suggestions">
+                <button class="suggestion-chip">What is our highest revenue product category?</button>
+                <button class="suggestion-chip">Which courier has the best delivery performance?</button>
+                <button class="suggestion-chip">Suggest restock quantities for low stock items.</button>
+                <button class="suggestion-chip">Summarize marketing ROI for Google vs. Facebook.</button>
+              </div>
+            </div>
+
+            <!-- Chat inputs footer -->
+            <div class="chat-footer">
+              <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Ask AI about sales, customers, margins, or shipping..."
+                  class="form-input" autocomplete="off">
+                <button type="submit" class="primary-btn chat-send-btn" id="chat-submit-btn">
+                  <span>Send</span> <i data-lucide="send"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Details Side Slider Drawer (Shared across tables) -->
+    <div id="details-drawer" class="drawer">
+      <div class="drawer-header">
+        <div>
+          <h2 class="drawer-title" id="drawer-title">Order Details</h2>
+          <span class="muted-text text-xs" id="drawer-subtitle">ORD-2250</span>
+        </div>
+        <button class="icon-btn" id="drawer-close-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="drawer-body" id="drawer-body">
+        <!-- populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Alerts / Notifications side drawer -->
+    <div id="alerts-drawer" class="drawer">
+      <div class="drawer-header">
+        <div>
+          <h2>System Notifications</h2>
+          <span class="muted-text text-xs">Recent operational alerts</span>
+        </div>
+        <button class="icon-btn" id="alerts-close-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="drawer-body" id="alerts-body">
+        <!-- populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Backdrop for Drawer Sliders -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  </div>
+
+  <!-- Floating AI Assistant Widget -->
+  <div class="floating-ai-widget" id="floating-ai-widget">
+    <button class="floating-ai-trigger" id="floating-ai-trigger" title="Chat with AI Analyst">
+      <i data-lucide="sparkles" class="sparkles-icon"></i>
+    </button>
+
+    <div class="floating-chat-container" id="floating-chat-container">
+      <div class="floating-chat-header">
+        <div class="chat-header-info">
+          <div class="ai-avatar"><i data-lucide="sparkles"></i></div>
+          <div>
+            <h3 class="m-0">NovaCart AI Analyst</h3>
+            <span class="online-indicator"><span class="pulse-dot"></span>Online • Powered by Gemini</span>
+          </div>
+        </div>
+        <button class="chat-close-btn" id="floating-chat-close-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="floating-chat-body" id="floating-chat-log">
+        <div class="message msg-ai">
+          <div class="message-bubble">
+            Hi Stalin! I'm your NovaCart AI Analyst. How can I help you optimize sales, check stock levels, or analyze
+            margins today?
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-chat-suggestions" id="floating-chat-suggestions">
+        <button class="floating-suggestion-chip">Check low stock items</button>
+        <button class="floating-suggestion-chip">Highest revenue category?</button>
+      </div>
+
+      <div class="floating-chat-footer">
+        <form id="floating-chat-form" class="floating-chat-form">
+          <input type="text" id="floating-chat-input" placeholder="Type a message..." autocomplete="off"
+            class="form-input">
+          <button type="submit" class="primary-btn floating-chat-send-btn" id="floating-chat-submit-btn">
+            <i data-lucide="send"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include DB file first, then AI logic, then general application controller -->
+  <script src="data.js"></script>
+  <script src="ai.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
