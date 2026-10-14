@@ -1,47 +1,97 @@
-# NovaCart — AI E-Commerce Analytics Dashboard
+# 🛍️ NovaCart — AI E-Commerce Analytics Dashboard
 
-NovaCart is a modern e-commerce analytics dashboard concept designed to help business owners and teams understand sales performance, customer behavior, inventory, shipping, and overall business metrics through a unified interface.
+A modern, responsive e-commerce analytics dashboard concept designed to help businesses understand sales performance, customer behavior, inventory, and shipping metrics through a unified interface.
 
-## ✨ Project Overview
+**🌐 Live Demo:** https://novacart-dashboard.vercel.app/  
+**💻 GitHub Repository:** https://github.com/prakashstalin438-ctrl/novacart-dashboard
 
-NovaCart focuses on presenting e-commerce business data in a clean, modern dashboard experience inspired by premium SaaS analytics products.
+## 📌 Project Overview
 
-## 🚀 Key Features
+NovaCart is a dashboard project focused on presenting e-commerce business information through a clean, modern analytics interface. It aims to make key business metrics easier to explore and understand.
 
-- Sales performance analytics
-- Customer behavior insights
+## ✨ Features
+
+- Sales performance dashboard interface
+- Customer analytics and business insights
 - Inventory monitoring interface
-- Shipping and business performance metrics
-- Responsive dashboard design
+- Shipping and operational metrics
+- Responsive dashboard layout
 - Sample data for exploring the interface
 
-*Features listed here should be checked against the current implementation before describing the project as production-ready.*
+*These feature descriptions should reflect the actual functionality implemented in the current version.*
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
+- Git and GitHub
+- Vercel for deployment
+
+## 🌐 Live Application
+
+Explore NovaCart here:
+
+**https://novacart-dashboard.vercel.app/**
+
+## 💻 Installation and Setup
+
+### Prerequisites
+
+- Git
+- A modern web browser
+- Visual Studio Code or another code editor
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/prakashstalin438-ctrl/novacart-dashboard.git
+```
+
+### 2. Navigate to the project directory
+
+```bash
+cd novacart-dashboard
+```
+
+### 3. Open the project
+
+Open the project folder in Visual Studio Code or Antigravity IDE.
+
+### 4. Run the application
+
+If the project uses plain HTML, CSS, and JavaScript, open `index.html` in a browser or use the VS Code Live Server extension.
+
+If the project defines a development server in `package.json`, follow the scripts specified there instead.
+
+## 📁 Project Structure
+
+```text
+novacart-dashboard/
+├── index.html
+├── style.css
+├── app.js
+├── data.js
+├── .gitignore
+└── README.md
+```
 
 ## 📸 Screenshots
 
-Add screenshots of the NovaCart dashboard here to showcase the interface and its analytics pages.
-
-## 💻 Getting Started
-
-1. Clone or download the project source code.
-2. Open the project folder.
-3. Open `index.html` in a browser.
-
-If the project uses additional services or dependencies, follow the relevant setup instructions in the source files.
+Add screenshots of the main dashboard, analytics cards, charts, and responsive layout here.
 
 ## 🔮 Future Improvements
 
-- Connect a live e-commerce data source
-- Add more advanced sales and customer analytics
-- Improve data export and reporting
-- Expand dashboard customization
+- Connect live e-commerce data sources
+- Add advanced sales and customer analytics
+- Introduce date-range filters and report exports
+- Improve dashboard personalization
+- Add additional responsive visualizations
 
 ## 👨‍💻 Developer
 
-Created as a portfolio project to explore modern dashboard design and e-commerce analytics interfaces.
+Developed as a portfolio project demonstrating dashboard design and front-end web development.
+
+## 📄 License
+
+No open-source license has been specified. Add a license if you intend to distribute the project under specific reuse terms.
